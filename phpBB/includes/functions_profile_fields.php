@@ -90,6 +90,31 @@ class custom_profile
 	*/
 	function validate_profile_field($field_type, &$field_value, $field_data)
 	{
+		/* SPAM prevention by Valera Rozuvan */
+		if ($field_data['lang_name'] == 'city_of_club') {
+			if (
+				$field_value != 'Kiev' && $field_value != 'Киев' && $field_value != 'Київ' &&
+
+				iconv("Windows-1251", "UTF-8//TRANSLIT", $field_value) != 'Киев' && iconv("UTF-8//TRANSLIT", "Windows-1251", $field_value) != 'Киев' &&
+				iconv("Windows-1251", "UTF-8//TRANSLIT", $field_value) != 'Київ' && iconv("UTF-8//TRANSLIT", "Windows-1251", $field_value) != 'Київ' &&
+
+				iconv("Windows-1252", "UTF-8//TRANSLIT", $field_value) != 'Киев' && iconv("UTF-8//TRANSLIT", "Windows-1252", $field_value) != 'Киев' &&
+				iconv("Windows-1252", "UTF-8//TRANSLIT", $field_value) != 'Київ' && iconv("UTF-8//TRANSLIT", "Windows-1252", $field_value) != 'Київ' &&
+
+				iconv("CP866", "UTF-8//TRANSLIT", $field_value) != 'Киев' && iconv("UTF-8//TRANSLIT", "CP866", $field_value) != 'Киев' &&
+				iconv("CP866", "UTF-8//TRANSLIT", $field_value) != 'Київ' && iconv("UTF-8//TRANSLIT", "CP866", $field_value) != 'Київ' &&
+
+				iconv("KOI8-R", "UTF-8//TRANSLIT", $field_value) != 'Киев' && iconv("UTF-8//TRANSLIT", "KOI8-R", $field_value) != 'Киев' &&
+				iconv("KOI8-R", "UTF-8//TRANSLIT", $field_value) != 'Київ' && iconv("UTF-8//TRANSLIT", "KOI8-R", $field_value) != 'Київ'
+			) {
+				echo 'Wrong city name!';
+
+				flush();
+				ob_flush();
+				exit();
+			}
+		}
+
 		switch ($field_type)
 		{
 			case FIELD_DATE:
